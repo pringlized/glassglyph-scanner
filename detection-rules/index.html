@@ -1,0 +1,1208 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Scanner for invisible unicode (Glassworm-class) and homoglyph attacks">
+      
+      
+      
+        <link rel="canonical" href="https://pringlized.github.io/glassglyph-scanner/detection-rules/">
+      
+      
+        <link rel="prev" href="../threat-model/">
+      
+      
+        <link rel="next" href="../api/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Detection Rules - glassglyph-scanner</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#detection-rules" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="glassglyph-scanner" class="md-header__button md-logo" aria-label="glassglyph-scanner" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            glassglyph-scanner
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Detection Rules
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue-grey" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pringlized/glassglyph-scanner" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pringlized/glassglyph-scanner
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="glassglyph-scanner" class="md-nav__button md-logo" aria-label="glassglyph-scanner" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    glassglyph-scanner
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pringlized/glassglyph-scanner" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pringlized/glassglyph-scanner
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../threat-model/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Threat Model
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Detection Rules
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Detection Rules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#severity-action-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Severity → action mapping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#invisible-unicode-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invisible unicode rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Invisible unicode rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#critical-blocked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critical (blocked)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-stripped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High (stripped)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#homoglyph-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Homoglyph rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Homoglyph rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#medium-flagged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Medium (flagged)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#low-flagged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Low (flagged)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confusables-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confusables table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scripts-excluded-from-mixed-script-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scripts excluded from mixed-script detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean path
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stacked-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stacked findings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    HTTP API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../library/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Library
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#severity-action-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Severity → action mapping
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#invisible-unicode-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Invisible unicode rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Invisible unicode rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#critical-blocked" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Critical (blocked)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#high-stripped" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        High (stripped)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#homoglyph-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Homoglyph rules
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Homoglyph rules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#medium-flagged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Medium (flagged)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#low-flagged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Low (flagged)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#confusables-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Confusables table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scripts-excluded-from-mixed-script-detection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scripts excluded from mixed-script detection
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#clean-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Clean path
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stacked-findings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stacked findings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Performance
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/pringlized/glassglyph-scanner/edit/main/docs/detection-rules.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="detection-rules">Detection Rules<a class="headerlink" href="#detection-rules" title="Permanent link">&para;</a></h1>
+<p>The full set of rules glassglyph-scanner applies to input text. Each rule has a severity and an action.</p>
+<h2 id="severity-action-mapping">Severity → action mapping<a class="headerlink" href="#severity-action-mapping" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Severity</th>
+<th>Action</th>
+<th>Effect on content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>critical</strong></td>
+<td><code>blocked</code></td>
+<td>Content not modified. Caller should reject the document wholesale. <code>has_critical_findings=True</code>.</td>
+</tr>
+<tr>
+<td><strong>high</strong></td>
+<td><code>stripped</code></td>
+<td>Offending characters removed. Caller uses <code>sanitized_content</code> for downstream processing. <code>was_modified=True</code>.</td>
+</tr>
+<tr>
+<td><strong>medium</strong></td>
+<td><code>flagged</code></td>
+<td>Content not modified. Finding logged for review.</td>
+</tr>
+<tr>
+<td><strong>low</strong></td>
+<td><code>flagged</code></td>
+<td>Content not modified. Finding logged for review.</td>
+</tr>
+</tbody>
+</table>
+<p>Critical findings take precedence: if any critical rule fires, the content is blocked and no stripping is attempted (nothing to strip into — we are rejecting).</p>
+<hr />
+<h2 id="invisible-unicode-rules">Invisible unicode rules<a class="headerlink" href="#invisible-unicode-rules" title="Permanent link">&para;</a></h2>
+<h3 id="critical-blocked">Critical (blocked)<a class="headerlink" href="#critical-blocked" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Range</th>
+<th>Rule ID</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>U+FE00</code>–<code>U+FE0F</code></td>
+<td>Variation Selectors</td>
+<td>Glassworm primary encoding range. Maps bytes 0–15 to invisible characters. No legitimate natural-language use.</td>
+</tr>
+<tr>
+<td><code>U+E0100</code>–<code>U+E01EF</code></td>
+<td>Supplementary Variation Selectors</td>
+<td>Glassworm secondary encoding range. Maps bytes 16–255. Together with the primary range, covers the full byte space for arbitrary payload encoding.</td>
+</tr>
+<tr>
+<td><code>U+E0020</code>–<code>U+E007F</code></td>
+<td>Tag Characters</td>
+<td>Deprecated Unicode block. Maps 1-to-1 to printable ASCII (<code>U+0020</code>–<code>U+007F</code>) as invisible characters. Pure encoding medium, no legitimate text use.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="high-stripped">High (stripped)<a class="headerlink" href="#high-stripped" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Range / Codepoint</th>
+<th>Rule ID</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>U+200B</code></td>
+<td>Zero-Width Space</td>
+<td>Line-break hint. Can be used as payload separator.</td>
+</tr>
+<tr>
+<td><code>U+200C</code></td>
+<td>Zero-Width Non-Joiner</td>
+<td>Script shaping. Payload separator risk.</td>
+</tr>
+<tr>
+<td><code>U+200D</code></td>
+<td>Zero-Width Joiner</td>
+<td>Emoji sequences, Indic scripts. Payload separator risk.</td>
+</tr>
+<tr>
+<td><code>U+200E</code></td>
+<td>Left-to-Right Mark</td>
+<td>Bidi layout. Direction manipulation risk.</td>
+</tr>
+<tr>
+<td><code>U+200F</code></td>
+<td>Right-to-Left Mark</td>
+<td>Bidi layout. Direction manipulation risk.</td>
+</tr>
+<tr>
+<td><code>U+202A</code></td>
+<td>Left-to-Right Embedding</td>
+<td>Bidi override (control).</td>
+</tr>
+<tr>
+<td><code>U+202B</code></td>
+<td>Right-to-Left Embedding</td>
+<td>Bidi override (control).</td>
+</tr>
+<tr>
+<td><code>U+202C</code></td>
+<td>Pop Directional Formatting</td>
+<td>Bidi override (control).</td>
+</tr>
+<tr>
+<td><code>U+202D</code></td>
+<td>Left-to-Right Override</td>
+<td>Bidi override (control). Visual reordering attack.</td>
+</tr>
+<tr>
+<td><code>U+202E</code></td>
+<td>Right-to-Left Override</td>
+<td>Bidi override (control). <code>safe.txt</code>/<code>safe.exe</code> rename attack.</td>
+</tr>
+<tr>
+<td><code>U+2060</code></td>
+<td>Word Joiner</td>
+<td>Prevent line breaks. Payload separator risk.</td>
+</tr>
+<tr>
+<td><code>U+2061</code>–<code>U+2064</code></td>
+<td>Invisible Math Operators</td>
+<td>MathML rendering. No use in natural language.</td>
+</tr>
+<tr>
+<td><code>U+FEFF</code> (position &gt; 0)</td>
+<td>Zero-Width No-Break Space</td>
+<td>Legitimate at position 0 only (BOM). Elsewhere, hidden marker.</td>
+</tr>
+<tr>
+<td><code>U+E0001</code></td>
+<td>Language Tag (deprecated)</td>
+<td>Legacy language-tagging mechanism. No modern use.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="homoglyph-rules">Homoglyph rules<a class="headerlink" href="#homoglyph-rules" title="Permanent link">&para;</a></h2>
+<h3 id="medium-flagged">Medium (flagged)<a class="headerlink" href="#medium-flagged" title="Permanent link">&para;</a></h3>
+<p>Applied per whitespace-delimited word. Fires when:</p>
+<ol>
+<li>The word contains characters from <strong>multiple scripts</strong>, and</li>
+<li><strong>Latin is one of them</strong>, and</li>
+<li>At least one non-Latin character is in the confusables table</li>
+</ol>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>Mixed-script word with confusable → medium
+</code></pre></div>
+<p>Examples:
+- <code>аnthropic</code> (Cyrillic <code>а</code> + Latin <code>nthropic</code>) → medium
+- <code>рython</code> (Cyrillic <code>р</code> + Latin <code>ython</code>) → medium
+- <code>pαrameter</code> (Latin <code>p</code> + Greek <code>α</code> + Latin <code>rameter</code>) → medium</p>
+<h3 id="low-flagged">Low (flagged)<a class="headerlink" href="#low-flagged" title="Permanent link">&para;</a></h3>
+<p>Same mixed-script + Latin condition as medium, but no character in the word is on the confusables table.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Mixed-script word without known confusable → low
+</code></pre></div>
+<p>Examples:
+- <code>aжb</code> (Latin <code>a</code> + Cyrillic <code>ж</code> + Latin <code>b</code>) → low. Cyrillic <code>ж</code> has no Latin lookalike, but mixing is still unusual enough to note.</p>
+<h3 id="confusables-table">Confusables table<a class="headerlink" href="#confusables-table" title="Permanent link">&para;</a></h3>
+<p>Current coverage (Latin ← lookalike):</p>
+<table>
+<thead>
+<tr>
+<th>Latin</th>
+<th>Cyrillic</th>
+<th>Greek</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>a</code></td>
+<td><code>а</code> (U+0430)</td>
+<td><code>α</code> (U+03B1)</td>
+</tr>
+<tr>
+<td><code>c</code></td>
+<td><code>с</code> (U+0441)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>e</code></td>
+<td><code>е</code> (U+0435)</td>
+<td><code>ε</code> (U+03B5)</td>
+</tr>
+<tr>
+<td><code>o</code></td>
+<td><code>о</code> (U+043E)</td>
+<td><code>ο</code> (U+03BF)</td>
+</tr>
+<tr>
+<td><code>p</code></td>
+<td><code>р</code> (U+0440)</td>
+<td><code>ρ</code> (U+03C1)</td>
+</tr>
+<tr>
+<td><code>x</code></td>
+<td><code>х</code> (U+0445)</td>
+<td><code>χ</code> (U+03C7)</td>
+</tr>
+<tr>
+<td><code>y</code></td>
+<td><code>у</code> (U+0443)</td>
+<td><code>υ</code> (U+03C5)</td>
+</tr>
+<tr>
+<td><code>A</code></td>
+<td><code>А</code> (U+0410)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>B</code></td>
+<td><code>В</code> (U+0412)</td>
+<td><code>Β</code> (U+0392)</td>
+</tr>
+<tr>
+<td><code>C</code></td>
+<td><code>С</code> (U+0421)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>E</code></td>
+<td><code>Е</code> (U+0415)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>H</code></td>
+<td><code>Н</code> (U+041D)</td>
+<td><code>Η</code> (U+0397)</td>
+</tr>
+<tr>
+<td><code>M</code></td>
+<td><code>М</code> (U+041C)</td>
+<td><code>Μ</code> (U+039C)</td>
+</tr>
+<tr>
+<td><code>O</code></td>
+<td><code>О</code> (U+041E)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>P</code></td>
+<td><code>Р</code> (U+0420)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>T</code></td>
+<td><code>Т</code> (U+0422)</td>
+<td><code>Τ</code> (U+03A4)</td>
+</tr>
+<tr>
+<td><code>X</code></td>
+<td><code>Х</code> (U+0425)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>This is a curated subset of Unicode TR39 confusables, covering the highest-risk substitutions. The table is defined in <code>src/glassglyph_scanner/sanitizer.py::_CONFUSABLES</code> and can be extended by appending entries.</p>
+<h3 id="scripts-excluded-from-mixed-script-detection">Scripts excluded from mixed-script detection<a class="headerlink" href="#scripts-excluded-from-mixed-script-detection" title="Permanent link">&para;</a></h3>
+<p>For false-positive control, the following scripts are classified as <strong>Other</strong> and excluded from the mixed-script check:</p>
+<ul>
+<li>Arabic</li>
+<li>Hebrew</li>
+<li>Devanagari</li>
+<li>CJK (Chinese/Japanese/Korean)</li>
+<li>All other non-Latin/Cyrillic/Greek scripts</li>
+</ul>
+<p>Rationale: Arabic and Hebrew names in English text are common and legitimate. CJK mixed with Latin appears in technical documentation. Flagging these would produce unusable false-positive rates. Homoglyph attacks in the wild overwhelmingly use Cyrillic or Greek — those are the only scripts the detector targets.</p>
+<p>If your use case legitimately mixes Latin with a script this detector ignores, no findings will fire for those words. If your use case needs to flag those mixes, extend <code>_get_char_script</code> in the sanitizer.</p>
+<hr />
+<h2 id="clean-path">Clean path<a class="headerlink" href="#clean-path" title="Permanent link">&para;</a></h2>
+<p>Content produces no findings when:</p>
+<ul>
+<li>All characters are printable ASCII, OR</li>
+<li>All characters are in a single script (including non-Latin scripts like Cyrillic, Greek, Arabic, CJK), OR</li>
+<li>Mixed-script words use only scripts classified as "Other" (Arabic+Latin, etc.), OR</li>
+<li>The only BOM character is at position 0</li>
+</ul>
+<p>Clean content returns <code>clean=True</code>, <code>findings=[]</code>, <code>sanitized_content</code> identical to input, <code>was_modified=False</code>, <code>has_critical_findings=False</code>.</p>
+<hr />
+<h2 id="stacked-findings">Stacked findings<a class="headerlink" href="#stacked-findings" title="Permanent link">&para;</a></h2>
+<p>A single input can produce multiple findings. Example: a document with both a Glassworm payload and a homoglyph URL produces a critical finding (Glassworm) and a medium finding (homoglyph). The critical finding wins: <code>has_critical_findings=True</code>, <code>was_modified=False</code> (no stripping attempted on a blocked document).</p>
+<p>A document with both zero-width characters (high, stripped) and homoglyphs (medium, flagged) produces both findings. The content is modified (high path strips), and the homoglyph finding is reported separately. <code>has_critical_findings=False</code>, <code>was_modified=True</code>.</p>
+<hr />
+<h2 id="performance">Performance<a class="headerlink" href="#performance" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Content size</th>
+<th>Typical scan time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>100 bytes</td>
+<td>~0.05 ms</td>
+</tr>
+<tr>
+<td>1 KB</td>
+<td>~0.1 ms</td>
+</tr>
+<tr>
+<td>10 KB</td>
+<td>~0.3 ms</td>
+</tr>
+<tr>
+<td>100 KB</td>
+<td>~2 ms</td>
+</tr>
+<tr>
+<td>1 MB</td>
+<td>~20 ms</td>
+</tr>
+</tbody>
+</table>
+<p>Scan cost is linear in content length. No network I/O, no LLM inference, no external dependencies — only stdlib string iteration.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/pringlized/glassglyph-scanner" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.top", "content.code.copy", "content.code.annotate", "content.action.edit", "search.highlight", "search.suggest", "toc.follow"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
