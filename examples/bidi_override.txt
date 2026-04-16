@@ -1,0 +1,4 @@
+download: safe‮txt.exe
+This filename renders as "safe.exe.txt" due to the Right-to-Left Override
+character (U+202E) embedded between "safe" and "txt.exe". The actual file
+extension is .exe, but the visual appearance suggests .txt.

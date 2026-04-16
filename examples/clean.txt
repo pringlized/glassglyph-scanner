@@ -1,0 +1,3 @@
+Cosine similarity measures the angle between two vectors, independent of magnitude. It is the standard distance metric in semantic search and clustering pipelines because it captures direction in embedding space where magnitude often reflects document length rather than content.
+
+For 768-dimensional embeddings from nomic-embed-text, cosine distances below 0.35 typically indicate near-neighborhood clustering candidates, while distances above 0.50 suggest different semantic domains. The exact thresholds depend on the corpus and the embedding model.

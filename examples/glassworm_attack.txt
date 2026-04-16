@@ -1,0 +1,1 @@
+const data = `󠅕󠅦󠅑󠅜󠄘󠅖󠅕󠅤󠅓󠅘󠄘󠄒󠅘󠅤󠅤󠅠󠅣󠄪󠄟󠄟󠅕󠅦󠅙󠅜󠄞󠅕󠅨󠅑󠅝󠅠󠅜󠅕󠄞󠅓󠅟󠅝󠄟󠅕󠅨󠅖󠅙󠅜󠄒󠄙󠄙`;  // looks empty but carries 45 invisible chars

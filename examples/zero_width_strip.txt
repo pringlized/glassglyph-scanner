@@ -1,0 +1,4 @@
+This line looks​normal but contains a zero-width space.
+This line has a zero-width‌joiner hidden in it.
+This one uses‍a joiner too.
+And this one has a word‎ with an LTR mark.

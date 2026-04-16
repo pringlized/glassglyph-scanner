@@ -1,0 +1,14 @@
+services:
+  glassglyph-scanner:
+    build: .
+    container_name: glassglyph-scanner
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    # Read-only root FS since we don't write anything
+    read_only: true
+    # Drop all capabilities — the service doesn't need them
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true

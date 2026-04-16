@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "glassglyph-scanner"
+version = "0.1.0"
+description = "Scanner for invisible unicode (Glassworm-class) and homoglyph attacks."
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Jim Pringle" },
+]
+keywords = [
+    "security",
+    "unicode",
+    "glassworm",
+    "homoglyph",
+    "prompt-injection",
+    "supply-chain",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Text Processing",
+]
+# Core scanner has ZERO external dependencies — just the stdlib.
+dependencies = []
+
+[project.optional-dependencies]
+cli = ["typer>=0.12"]
+server = ["fastapi>=0.115", "uvicorn[standard]>=0.32"]
+all = ["glassglyph-scanner[cli,server]"]
+dev = [
+    "glassglyph-scanner[cli,server]",
+    "pytest>=8",
+    "httpx>=0.27",
+    "ruff>=0.6",
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5",
+]
+
+[project.scripts]
+glassglyph-scanner = "glassglyph_scanner.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/pringlized/glassglyph-scanner"
+Issues = "https://github.com/pringlized/glassglyph-scanner/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/glassglyph_scanner"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --strict-markers"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["E501"]  # line-length handled by formatter
