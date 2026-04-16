@@ -32,7 +32,6 @@ import time
 import unicodedata
 from dataclasses import dataclass, field
 
-
 # ────────────────────────────────────────────────────────────────────
 # Invisible character ranges
 # ────────────────────────────────────────────────────────────────────

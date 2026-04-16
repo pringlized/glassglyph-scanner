@@ -19,9 +19,9 @@ CLI: `glassglyph-scanner scan <file>` (requires `pip install glassglyph-scanner[
 HTTP: `uvicorn glassglyph_scanner.server:app` (requires `pip install glassglyph-scanner[server]`)
 """
 from .sanitizer import (
-    sanitize,
-    SanitizationResult,
     SanitizationFinding,
+    SanitizationResult,
+    sanitize,
 )
 
 __version__ = "0.1.0"

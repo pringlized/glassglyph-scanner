@@ -1,11 +1,8 @@
 """Tests for the core sanitizer."""
 from __future__ import annotations
 
-import pytest
-
 from glassglyph_scanner import sanitize
 from glassglyph_scanner.sanitizer import SanitizationResult
-
 
 # ── helpers ─────────────────────────────────────────────────────────
 
