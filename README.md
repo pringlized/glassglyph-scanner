@@ -1,4 +1,6 @@
-# Glassglyph Scanner
+<p align="center">
+  <img src="assets/glassglyph_scanner_header_v7.svg" alt="Glassglyph Scanner">
+</p>
 
 **A reference scanner for invisible unicode and homoglyph attacks on text-based systems.**
 
@@ -227,4 +229,4 @@ MIT. See `LICENSE`.
 
 Research basis: Aikido Security's March 2026 Glassworm writeup, Unicode Consortium TR39 confusables data, and community security research on invisible-unicode supply-chain attacks.
 
-Built as a reference implementation from the Mens Altera ingestion pipeline's Gate 1 character sanitization layer.
+Built as a reference implementation from a knowledge base ingestion pipeline's Gate 1 character sanitization layer.
